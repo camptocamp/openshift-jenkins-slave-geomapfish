@@ -38,13 +38,18 @@ RUN curl -sSLO https://github.com/openshift/origin/releases/download/v1.5.0/open
 RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave
 
 # Modify access to needed resource for the run-jnlp-client script
-RUN chmod 777 /etc/passwd && \
-    chmod -R 777 /etc/alternatives && \
-    chmod -R 777 /var/lib/dpkg/alternatives && \
-    chmod -R 775 /usr/lib/jvm && \
-    chmod 775 /usr/bin && \
-    chmod 775 /usr/share/man/man1
-
+RUN chmod 660 /etc/passwd && \
+    chown :jenkins-slave /etc/passwd && \
+    chmod -R 770 /etc/alternatives && \
+    chown -R :jenkins-slave /etc/alternatives && \
+    chmod -R 770 /var/lib/dpkg/alternatives && \
+    chown -R :jenkins-slave /var/lib/dpkg/alternatives && \
+    chmod -R 770 /usr/lib/jvm && \
+    chown -R :jenkins-slave /usr/lib/jvm && \
+    chmod 770 /usr/bin && \
+    chown :jenkins-slave /usr/bin && \
+    chmod 770 /usr/share/man/man1 && \
+    chown :jenkins-slave /usr/share/man/man1
 # Copy the entrypoint
 ADD contrib/bin/* /usr/local/bin/
 
