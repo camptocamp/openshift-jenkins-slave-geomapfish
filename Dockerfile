@@ -8,8 +8,6 @@ ENV HOME=/home/jenkins-slave \
     JENKINS_SWARM_VERSION=3.4 \
     OPENSHIFT_CLIENT_VERSION=v1.5.0-031cbe4
 
-USER root
-
 # Update
 RUN apt-get update && \
     apt-get -y upgrade && \
@@ -37,7 +35,7 @@ RUN curl -sSLO https://github.com/openshift/origin/releases/download/v1.5.0/open
 # Create jenkins-user
 RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave
 
-# Modify access to needed resource for the run-jnlp-client script
+# Modify access to needed resource as this will run as user jenkins-slave
 RUN chmod 660 /etc/passwd && \
     chown :jenkins-slave /etc/passwd && \
     chmod -R 770 /etc/alternatives && \
@@ -49,7 +47,9 @@ RUN chmod 660 /etc/passwd && \
     chmod 770 /usr/bin && \
     chown :jenkins-slave /usr/bin && \
     chmod 770 /usr/share/man/man1 && \
-    chown :jenkins-slave /usr/share/man/man1
+    chown :jenkins-slave /usr/share/man/man1 && \
+    chown -R jenkins-slave: /usr/lib/node_modules
+
 # Copy the entrypoint
 ADD contrib/bin/* /usr/local/bin/
 
