@@ -43,19 +43,21 @@ RUN curl -sSLO https://github.com/kubernetes/kompose/releases/download/$KOMPOSE_
   && chmod +x /usr/local/bin/kompose \
   && rm -f kompose-linux-amd64.tar.gz
 
+# Create jenkins-user
+RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave
+
 # Install helm client
 RUN curl -sSLO https://storage.googleapis.com/kubernetes-helm/helm-$HELM_VERSION-linux-amd64.tar.gz \
   && tar -xvf helm-$HELM_VERSION-linux-amd64.tar.gz \
   && mv linux-amd64/helm /usr/local/bin/helm \
   && chmod +x /usr/local/bin/helm \
+  && mkdir $HOME/.helm
+  && chown jenkins-slave:jenkins-slave $HOME/.helm
   && rm -rf linux-amd64 \
   && rm -f helm-$HELM_VERSION-linux-amd64.tar.gz
 
 # Install helm template plugin
 RUN helm plugin install https://github.com/technosophos/helm-template
-
-# Create jenkins-user
-RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave
 
 # Modify access to needed resource as this will run as user jenkins-slave
 RUN chmod 660 /etc/passwd && \
