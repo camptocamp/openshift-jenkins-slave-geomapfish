@@ -45,8 +45,10 @@ RUN curl -sSLO https://github.com/kubernetes/kompose/releases/download/$KOMPOSE_
 
 # Install helm client
 RUN curl -sSLO https://storage.googleapis.com/kubernetes-helm/helm-$HELM_VERSION-linux-amd64.tar.gz \
-  && tar -xvf helm-$HELM_VERSION-linux-amd64.tar.gz -C /usr/local/bin \
+  && tar -xvf helm-$HELM_VERSION-linux-amd64.tar.gz \
+  && mv linux-amd64/helm /usr/local/bin/helm \
   && chmod +x /usr/local/bin/helm \
+  && rm -f linux-amd64 \
   && rm -f helm-$HELM_VERSION-linux-amd64.tar.gz
 
 # Install helm template plugin
