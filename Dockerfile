@@ -32,9 +32,9 @@ RUN apt-get update && \
 
 # Install openshift client
 RUN curl -sSLO https://github.com/openshift/origin/releases/download/$OPENSHIFT_CLIENT_VERSION/openshift-origin-client-tools-$OPENSHIFT_CLIENT_VERSION-$OPENSHIFT_CLIENT_VERSION_TAG-linux-64bit.tar.gz \
-  && tar --strip-components=1 -xvf openshift-origin-client-tools-$OPENSHIFT_CLIENT_VERSION-linux-64bit.tar.gz -C /usr/local/bin \
+  && tar --strip-components=1 -xvf openshift-origin-client-tools-$OPENSHIFT_CLIENT_VERSION-$OPENSHIFT_CLIENT_VERSION_TAG-linux-64bit.tar.gz -C /usr/local/bin \
   && chmod +x /usr/local/bin/oc \
-  && rm -f openshift-origin-client-tools-$OPENSHIFT_CLIENT_VERSION-linux-64bit.tar.gz
+  && rm -f openshift-origin-client-tools-$OPENSHIFT_CLIENT_VERSION-$OPENSHIFT_CLIENT_VERSION_TAG-linux-64bit.tar.gz
 
 # Install kompose client
 RUN curl -sSLO https://github.com/kubernetes/kompose/releases/download/$KOMPOSE_VERSION/kompose-linux-amd64.tar.gz \
