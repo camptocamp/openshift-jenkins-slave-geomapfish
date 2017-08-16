@@ -51,7 +51,7 @@ RUN curl -sSLO https://storage.googleapis.com/kubernetes-helm/helm-$HELM_VERSION
   && tar -xvf helm-$HELM_VERSION-linux-amd64.tar.gz \
   && mv linux-amd64/helm /usr/local/bin/helm \
   && chmod +x /usr/local/bin/helm \
-  && mkdir $HOME/.helm \
+  && mkdir -p $HOME/.helm/plugins \
   && chown jenkins-slave:jenkins-slave $HOME/.helm \
   && rm -rf linux-amd64 \
   && rm -f helm-$HELM_VERSION-linux-amd64.tar.gz
