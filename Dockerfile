@@ -38,7 +38,8 @@ RUN curl -sSLO https://github.com/openshift/origin/releases/download/$OPENSHIFT_
 
 # Install kompose client
 RUN curl -sSLO https://github.com/kubernetes/kompose/releases/download/$KOMPOSE_VERSION/kompose-linux-amd64.tar.gz \
-  && tar --strip-components=1 -xvf kompose-linux-amd64.tar.gz -C /usr/local/bin \
+  && tar --strip-components=1 -xvf kompose-linux-amd64.tar.gz \
+  && mv kompose-linux-amd64 /usr/local/bin/kompose \
   && chmod +x /usr/local/bin/kompose \
   && rm -f kompose-linux-amd64.tar.gz
 
