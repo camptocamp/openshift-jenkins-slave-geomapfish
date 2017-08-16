@@ -48,7 +48,7 @@ RUN curl -sSLO https://storage.googleapis.com/kubernetes-helm/helm-$HELM_VERSION
   && tar -xvf helm-$HELM_VERSION-linux-amd64.tar.gz \
   && mv linux-amd64/helm /usr/local/bin/helm \
   && chmod +x /usr/local/bin/helm \
-  && rm -f linux-amd64 \
+  && rm -rf linux-amd64 \
   && rm -f helm-$HELM_VERSION-linux-amd64.tar.gz
 
 # Install helm template plugin
