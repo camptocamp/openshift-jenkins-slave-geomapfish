@@ -6,7 +6,11 @@ ENV HOME=/home/jenkins-slave \
     JAVA_HOME=/usr/lib/jvm/java-8-oracle \
     PATH=$JAVA_HOME/bin:$PATH \
     JENKINS_SWARM_VERSION=3.4 \
-    OPENSHIFT_CLIENT_VERSION=v1.5.0-031cbe4
+    OPENSHIFT_CLIENT_VERSION=v1.5.0 \
+    OPENSHIFT_CLIENT_VERSION_TAG=031cbe4 \
+    KOMPOSE_VERSION=v1.0.0 \
+    HELM_VERSION=v2.5.1 \
+    HELM_TEMPLATE_VERSION=2.5.1.2
 
 # Update
 RUN apt-get update && \
@@ -27,10 +31,25 @@ RUN apt-get update && \
     apt-get clean
 
 # Install openshift client
-RUN curl -sSLO https://github.com/openshift/origin/releases/download/v1.5.0/openshift-origin-client-tools-$OPENSHIFT_CLIENT_VERSION-linux-64bit.tar.gz \
+RUN curl -sSLO https://github.com/openshift/origin/releases/download/$OPENSHIFT_CLIENT_VERSION/openshift-origin-client-tools-$OPENSHIFT_CLIENT_VERSION-$OPENSHIFT_CLIENT_VERSION_TAG-linux-64bit.tar.gz \
   && tar --strip-components=1 -xvf openshift-origin-client-tools-$OPENSHIFT_CLIENT_VERSION-linux-64bit.tar.gz -C /usr/local/bin \
   && chmod +x /usr/local/bin/oc \
   && rm -f openshift-origin-client-tools-$OPENSHIFT_CLIENT_VERSION-linux-64bit.tar.gz
+
+# Install kompose client
+RUN curl -sSLO https://github.com/kubernetes/kompose/releases/download/$KOMPOSE_VERSION/kompose-linux-amd64.tar.gz \
+  && tar --strip-components=1 -xvf kompose-linux-amd64.tar.gz -C /usr/local/bin \
+  && chmod +x /usr/local/bin/kompose \
+  && rm -f kompose-linux-amd64.tar.gz
+
+# Install helm client
+RUN curl -sSLO https://storage.googleapis.com/kubernetes-helm/helm-$HELM_VERSION-linux-amd64.tar.gz \
+  && tar --strip-components=1 -xvf helm-$HELM_VERSION-linux-amd64.tar.gz -C /usr/local/bin \
+  && chmod +x /usr/local/bin/helm \
+  && rm -f helm-$HELM_VERSION-linux-amd64.tar.gz
+
+# Install helm template plugin
+RUN helm plugin install https://github.com/technosophos/helm-template
 
 # Create jenkins-user
 RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave

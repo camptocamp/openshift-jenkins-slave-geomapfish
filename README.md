@@ -13,3 +13,9 @@ To see build logs
 ```
 oc logs -f bc/openshift-jenkins-slave-geomapfish
 ```
+
+to create the pipeline:
+
+```
+oc new-build --strategy pipeline https://github.com/camptocamp/demo_geomapfish.git#openshift --name demo-geomapfish
+```
