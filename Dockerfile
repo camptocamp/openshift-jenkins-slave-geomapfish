@@ -30,6 +30,9 @@ RUN apt-get update && \
     apt-get install -y wget curl git gettext lsof ca-certificates && \
     apt-get clean
 
+# Create jenkins-user
+RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave
+
 # Install openshift client
 RUN curl -sSLO https://github.com/openshift/origin/releases/download/$OPENSHIFT_CLIENT_VERSION/openshift-origin-client-tools-$OPENSHIFT_CLIENT_VERSION-$OPENSHIFT_CLIENT_VERSION_TAG-linux-64bit.tar.gz \
   && tar --strip-components=1 -xvf openshift-origin-client-tools-$OPENSHIFT_CLIENT_VERSION-$OPENSHIFT_CLIENT_VERSION_TAG-linux-64bit.tar.gz -C /usr/local/bin \
@@ -42,9 +45,6 @@ RUN curl -sSLO https://github.com/kubernetes/kompose/releases/download/$KOMPOSE_
   && mv ./kompose-linux-amd64 /usr/local/bin/kompose \
   && chmod +x /usr/local/bin/kompose \
   && rm -f kompose-linux-amd64.tar.gz
-
-# Create jenkins-user
-RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave
 
 # Install helm client
 RUN curl -sSLO https://storage.googleapis.com/kubernetes-helm/helm-$HELM_VERSION-linux-amd64.tar.gz \
